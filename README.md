@@ -5,4 +5,6 @@ Curriculum overview: http://catalog.mit.edu/degree-charts/computer-science-engin
 In-Depth list of CompSci MIT OpenCourseware classes: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/
 
 Course Number-Course Name-Date:
+
 6.0001-Introduction to Computer Science Programming in Python-8/26/2021
+-https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/
