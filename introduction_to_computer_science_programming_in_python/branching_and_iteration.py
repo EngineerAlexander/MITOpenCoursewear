@@ -25,20 +25,9 @@ s = "hello"
 s = 'y'+s[1:len(s)]
 print(s)
 
-# for loops can iterate over any set of values (ex. strings)
+# strings can also be indexed with [start:stop:step]
+print(s[::]) #all forwards
+print(s[::-1]) #all backwards
+# note can omit step (last index) too
 
-cube = 27
-epsilon = 0.01
-num_guesses = 0
-low = 0
-high = cube
-guess = (high + low)/2.0
-while abs(guess**3 - cube) >= epsilon:
-if guess**3 < cube :
-low = guess
-else:
-high = guess
-guess = (high + low)/2.0
-num_guesses += 1
-print 'num_guesses =', num_guesses
-print guess, 'is close to the cube root of', cube
+# for loops can iterate over any set of values (ex. strings)5
