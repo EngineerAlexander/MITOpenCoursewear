@@ -83,3 +83,21 @@ print(isinstance(c, Coordinate))
 #__len__(self) -> len(self)
 #__str__(self) -> print self
 
+class Coordinate(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def distance(self, other):
+        x_diff_sq = (self.x-other.x)**2
+        y_diff_sq = (self.y-other.y)**2
+        return (x_diff_sq + y_diff_sq)**0.5
+    def __str__(self):
+        return "<"+str(self.x)+","+str(self.y)+">"
+    def __add__(self, other):
+        newx = self.x + other.x
+        newy = self.y + other.y
+        return Coordinate(newx, newy)
+
+a = Coordinate(2, 5)
+b = Coordinate(7, 3)
+print(a+b)
