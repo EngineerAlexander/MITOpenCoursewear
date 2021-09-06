@@ -64,17 +64,17 @@ def fact_iter(n):
 # COMBINE COMPLEXITY CLASSES
 #   LAW OF ADDITION FOR O(): used with sequential statements O(f(n)) + O(g(n)) is O(f(n) + g(n))
 #   EXAMPLE:
-for i in range(n):
-    print('a')
-for j in range(n*n):
-    print('b')
+# for i in range(n):
+#     print('a')
+# for j in range(n*n):
+#     print('b')
 #   is O(n) + O(n*n) =	O(n+n^2) = O(n^2) because of dominant term
 #   LAW OF MULTIPLICATION OF O(): used with nested statements/loops
 #   O(f(n)) * O(g(n)) is O(f(n) * g(n))
 #   EXAMPLE:
-for i in range(n):
-    for j in range(n):
-        print('a')
+# for i in range(n):
+#     for j in range(n):
+#         print('a')
 #   is O(n)*O(n) = O(n*n) = O(n2)
 
 # DENOTATIONS OF COMMON RUNTIMES
