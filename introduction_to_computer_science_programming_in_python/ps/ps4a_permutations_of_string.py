@@ -23,13 +23,23 @@ def permutations(s, dup = True):
             return res
 
 if __name__ == '__main__':
-    pass # test cases here
-
-print(permutations('1a11'))
-
-# Caesar Cipher: Pick integer and shift every letter by that integer to other letters in the alphabet. Be carefull with extremes
-# let's map uppercase to upercase, lowercase to lowercase, and keep punctuation and spaces
-# use message class with 2 subclasses: ciphertext, plaintext
-# give message class methods that can be used to encrypt or decrypt message
-# paintext class has methods to encode a string with a specific shift value
-# ciphertext contains a method used to decode the string
+    # TEST CASE 1
+    example_input = 'abc'
+    print('Input: ', example_input)
+    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
+    print('Actual Output:', permutations(example_input))
+    # TEST CASE 2
+    example_input = ''
+    print('Input: ', example_input)
+    print('Expected Output:', [''])
+    print('Actual Output:', permutations(example_input))
+    # TEST CASE 3
+    example_input = 'z'
+    print('Input: ', example_input)
+    print('Expected Output:', ['z'])
+    print('Actual Output:', permutations(example_input))
+    # TEST CASE 4
+    example_input = '12'
+    print('Input: ', example_input)
+    print('Expected Output:', ['12', '21'])
+    print('Actual Output:', permutations(example_input))
