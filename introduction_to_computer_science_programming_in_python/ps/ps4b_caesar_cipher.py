@@ -5,7 +5,6 @@
 # paintext class has methods to encode a string with a specific shift value
 # ciphertext contains a method used to decode the string
 
-import string
 import os
 
 def load_words(file_name):
@@ -57,13 +56,6 @@ def get_story_string():
     story = str(f.read())
     f.close()
     return story
-
-
-
-
-
-
-
 
 WORDLIST_FILENAME = 'words.txt'
 
@@ -119,12 +111,11 @@ class Message(object):
         letters only.        
         
         shift (integer): the amount by which to shift every letter of the 
-        alphabet. 0 <= shift < 26
+        alphabet. 0 <= shift < 26 [even though any integer will work]
 
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        shift = 1
 
         # Uppercase shifts
         lower_bound = 'A'
@@ -133,9 +124,9 @@ class Message(object):
         lower_bound_dec = ord(lower_bound)
         higher_bound_dec = ord(higher_bound)
 
-        list = list(range(lower_bound_dec, higher_bound_dec + 1))
-        list_chr = [chr(el) for el in list]
-        list_zero = [el - lower_bound_dec for el in list]
+        list_nums = list(range(lower_bound_dec, higher_bound_dec + 1))
+        list_chr = [chr(el) for el in list_nums]
+        list_zero = [el - lower_bound_dec for el in list_nums]
         list_zero_shift = [el + shift for el in list_zero]
 
         list_zero_shift_fixed = []
@@ -149,9 +140,42 @@ class Message(object):
         ans_list = [el + lower_bound_dec for el in list_zero_shift_fixed]
         ans_list_chr = [chr(el) for el in ans_list]
 
-        cipher_dict = {}
+        cipher_dict_1 = {}
         for i in range(len(list_chr)):
-            cipher_dict[list_chr[i]] = ans_list_chr[i]
+            cipher_dict_1[list_chr[i]] = ans_list_chr[i]
+            
+            
+            
+        # Lowercase shifts
+        lower_bound = 'a'
+        higher_bound = 'z'
+
+        lower_bound_dec = ord(lower_bound)
+        higher_bound_dec = ord(higher_bound)
+
+        list_nums = list(range(lower_bound_dec, higher_bound_dec + 1))
+        list_chr = [chr(el) for el in list_nums]
+        list_zero = [el - lower_bound_dec for el in list_nums]
+        list_zero_shift = [el + shift for el in list_zero]
+
+        list_zero_shift_fixed = []
+        for el in list_zero_shift:
+            while el < 0:
+                el = el + list_zero[-1] + 1
+            while el > list_zero[-1]:
+                el = el - list_zero[-1] - 1
+            list_zero_shift_fixed.append(el)
+
+        ans_list = [el + lower_bound_dec for el in list_zero_shift_fixed]
+        ans_list_chr = [chr(el) for el in ans_list]
+
+        cipher_dict_2 = {}
+        for i in range(len(list_chr)):
+            cipher_dict_2[list_chr[i]] = ans_list_chr[i]
+            
+        cipher_dict_1.update(cipher_dict_2)
+        
+        return cipher_dict_1
 
     def apply_shift(self, shift):
         '''
@@ -160,12 +184,26 @@ class Message(object):
         alphabet by some number of characters determined by the input shift        
         
         shift (integer): the shift with which to encrypt the message.
-        0 <= shift < 26
+        0 <= shift < 26 [even though any integer will work]
 
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        assert isinstance(shift, int), 'Given shift is not an integer'
+        
+        shift_dict = self.build_shift_dict(shift)
+        
+        ignore_string = " !@#$%^&*()-_+={}[]|\:;'<>?,./\""
+        
+        new_message = ""
+        for el in self.message_text:
+            if el not in ignore_string:
+                new_letter = shift_dict[el]
+                new_message += new_letter
+            else:
+                new_message += el
+        
+        return new_message
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
@@ -258,17 +296,18 @@ if __name__ == '__main__':
     print('Expected Output: Hello there boys and girls! [\'Hello\' \'there\' \'boys\' \'and\' \'girls!\']' )
     message = Message('Hello there boys and girls!')
     print('Actual Output: ', message.get_message_text(), message.get_valid_words())
-#    #Example test case (PlaintextMessage)
-#    plaintext = PlaintextMessage('hello', 2)
-#    print('Expected Output: jgnnq')
-#    print('Actual Output:', plaintext.get_message_text_encrypted())
-#
-#    #Example test case (CiphertextMessage)
-#    ciphertext = CiphertextMessage('jgnnq')
-#    print('Expected Output:', (24, 'hello'))
-#    print('Actual Output:', ciphertext.decrypt_message())
 
-    #TODO: WRITE YOUR TEST CASES HERE
+    print('Input: Are!' )
+    print('Expected Output: {A:B r:s e:f ... all shifted by one ... Z:A z:a}' )
+    message1 = Message('Are!')
+    dict1 = message1.build_shift_dict(1)
+    print('Actual Output: ', dict1)
+    
+    print('Input: Are!' )
+    print('Expected Output: Bsf!' )
+    message2 = Message('Are!')
+    message2_enc = message2.apply_shift(1)
+    print('Actual Output: ', message2_enc)
 
     #TODO: best shift value and unencrypted story 
     
