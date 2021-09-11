@@ -1,3 +1,5 @@
+# MIT CAESAR CIPHER HOMEWORK. THERE ARE SOME WAYS THAT THIS COULD HAVE BEEN CODED BETTER,
+# HOWEVER I STUCK TO THEIR .PDF CLASS TEMPLATE AS BEST I COULD AND TRYED TO FILL IN ALL THE METHODS AND FUNCTIONS TO THEIR SPECIFICATIONS
 # Caesar Cipher: Pick integer and shift every letter by that integer to other letters in the alphabet. Be carefull with extremes
 # let's map uppercase to upercase, lowercase to lowercase, and keep punctuation and spaces
 # use message class with 2 subclasses: ciphertext, plaintext
@@ -26,6 +28,7 @@ def load_words(file_name):
         wordlist.extend([word.lower() for word in line.split(' ')])
     #print("  ", len(wordlist), "words loaded.")
     inFile.close()
+    
     return wordlist
 
 def is_word(word_list, word):
@@ -46,15 +49,20 @@ def is_word(word_list, word):
     '''
     word = word.lower()
     word = word.strip(" !@#$%^&*()-_+={}[]|\:;'<>?,./\"")
+    
     return word in word_list
 
 def get_story_string():
     """
     Returns: a story in encrypted text.
     """
-    f = open("story.txt", "r")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_name = '\\' + 'story.txt'
+    file_path = dir_path + file_name
+    f = open(file_path, "r")
     story = str(f.read())
     f.close()
+    
     return story
 
 WORDLIST_FILENAME = 'words.txt'
@@ -320,7 +328,7 @@ class CiphertextMessage(Message):
 
 if __name__ == '__main__':
     # Test cases for Message class
-    print('Input: Hello there boys and girls!' )
+    print('\nInput: Hello there boys and girls!' )
     print('Expected Output: Hello there boys and girls! [\'Hello\' \'there\' \'boys\' \'and\' \'girls!\']' )
     message = Message('Hello there boys and girls!')
     print('Actual Output: ', message.get_message_text(), message.get_valid_words())
@@ -335,10 +343,10 @@ if __name__ == '__main__':
     print('Expected Output: Bsf!' )
     message2 = Message('Are!')
     message2_enc = message2.apply_shift(1)
-    print('Actual Output: ', message2_enc)
+    print('Actual Output: ', message2_enc, '\n')
     
     # Test cases for PlaintextMessage class
-    print('Input: Boyz!' )
+    print('\nInput: Boyz!' )
     print('Expected Output: Boyz! []' )
     print('3 {A:D r:u e:h ... all shifted by one ... Z:C z:c ...} Erbc')
     message3 = PlaintextMessage('Boyz!', 3)
@@ -347,19 +355,21 @@ if __name__ == '__main__':
     
     message3.change_shift(2)
     print('Expected Output: Dqab!')
-    print('Actual Output: ', message3.get_message_text_encrypted())
+    print('Actual Output: ', message3.get_message_text_encrypted(), '\n')
     
     # Test cases for CiphertextMessage
     
-    print('Expected Output: (0, \'Is that the sky?\')')
+    print('\nExpected Output: (0, \'Is that the sky?\')')
     message4 = CiphertextMessage('Is that the sky?')
     print('Actual Output: ', message3.get_message_text_encrypted())
     
     print('Expected Output: (16, \'Is that the sky?\')')
     message5 = PlaintextMessage('Is that the sky?', 10)
     message5_dec = CiphertextMessage(message5.get_message_text_encrypted())
-    print('Actual Output: ', message5_dec.decrypt_message())
+    print('Actual Output: ', message5_dec.decrypt_message(), '\n')
 
-    #TODO: best shift value and unencrypted story 
-    
-    pass #delete this line and replace with your code here
+    # DECRYPTION OF STORY
+    story_encrypted_string = get_story_string()
+    print('Story Encrypted Text: ', story_encrypted_string, '\n')
+    story_encrypted_text = CiphertextMessage(story_encrypted_string)
+    print('Story Shift and Decrypted Text: ',story_encrypted_text.decrypt_message())
