@@ -67,6 +67,8 @@ def get_story_string():
 
 WORDLIST_FILENAME = 'words.txt'
 
+### END HELPER CODE ###
+
 class Message(object):
     def __init__(self, text):
         '''
@@ -366,7 +368,12 @@ if __name__ == '__main__':
     print('Expected Output: (16, \'Is that the sky?\')')
     message5 = PlaintextMessage('Is that the sky?', 10)
     message5_dec = CiphertextMessage(message5.get_message_text_encrypted())
-    print('Actual Output: ', message5_dec.decrypt_message(), '\n')
+    print('Actual Output: ', message5_dec.decrypt_message())
+    
+    print('Expected Output: (0, \'\')')
+    message6 = PlaintextMessage('', 0)
+    message6_dec = CiphertextMessage(message6.get_message_text_encrypted())
+    print('Actual Output: ', message6_dec.decrypt_message(), '\n')
 
     # DECRYPTION OF STORY
     story_encrypted_string = get_story_string()
