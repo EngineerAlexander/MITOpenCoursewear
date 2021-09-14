@@ -143,6 +143,9 @@ def build_shift_dict_from_chars(a, b, shift):
     return cipher_dict
 
 
+
+
+
 class Message(object):
     def __init__(self, text):
         '''
@@ -240,6 +243,10 @@ class Message(object):
         
         return new_message
 
+
+
+
+
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
         '''
@@ -305,6 +312,10 @@ class PlaintextMessage(Message):
         self.encryption_dict = super().build_shift_dict(shift)
         self.message_text_encrypted = super().apply_shift(shift)
 
+
+
+
+
 class CiphertextMessage(Message):
     def __init__(self, text):
         '''
@@ -353,6 +364,10 @@ class CiphertextMessage(Message):
         decrypt_message = super().apply_shift(shift_index_max)
         
         return (shift_index_max, decrypt_message)
+
+
+
+
 
 if __name__ == '__main__':
     # note test cases are messy. Would spend time to organize them better for a more complecated OOP

@@ -1,4 +1,3 @@
-import string
 import os
 import permutations_of_string
 
@@ -176,7 +175,11 @@ class SubMessage(object):
                 new += el
             
         return new
-        
+
+
+
+
+
 class EncryptedSubMessage(SubMessage):
     def __init__(self, text):
         '''
@@ -240,8 +243,10 @@ class EncryptedSubMessage(SubMessage):
         best_dict = super().build_transpose_dict(permutations_vowels_lower[perm_index_max])
         best_text = super().apply_transpose(best_dict)
         
-        
         return (permutations_words[perm_index_max], best_text)
+    
+    
+    
     
 
 if __name__ == '__main__':
