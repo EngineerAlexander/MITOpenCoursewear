@@ -301,7 +301,7 @@ def read_trigger_config(filename):
             trigger2_list.append(None)
         elif line_split[1].upper() == 'NOT':
             trigger_string_list.append(None)
-            trigger1_list.append(line_split[0])
+            trigger1_list.append(build_trigger(line_split[0], trigger_type_list[i], trigger_string_list[i], trigger1_list[i], trigger2_list[i]))
             trigger2_list.append(None)
         elif line_split[1].upper() == 'AND' or 'OR':
             trigger_string_list.append(None)
@@ -315,7 +315,9 @@ def read_trigger_config(filename):
 
     return trigger_list
 
-def build_trigger(t, trigger_type, trigger_string, trigger1, trigger2):
+# USE VARIABLE ARGUMENTS!
+
+def build_trigger(t, trigger_type, trigger_string, trigger1 = None, trigger2 = None):
     """
     
     """

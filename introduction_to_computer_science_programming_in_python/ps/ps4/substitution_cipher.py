@@ -2,7 +2,24 @@ import string
 import os
 import permutations_of_string
 
-### HELPER CODE ###
+WORDLIST_FILENAME = 'words.txt'
+STORY_FILENAME = 'story.txt'
+
+def absolute_path(file_name):
+    """
+    file_name: name of file at level of .py file
+    
+    Returns: absolute path of file in filestructure.
+    """
+    assert isinstance(file_name, str), 'file_name is not a string'
+    # added some code to get it to work when run wherever on my os from VS Code
+    # more robust
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_name_plus = '\\' + file_name
+    absolute_path = dir_path + file_name_plus
+    
+    return absolute_path
+
 def load_words(file_name):
     '''
     file_name (string): the name of the file containing 
@@ -13,15 +30,19 @@ def load_words(file_name):
     Depending on the size of the word list, this function may
     take a while to finish.
     '''
+    assert isinstance(file_name, str), 'file_name is not a string'
     
     #print("Loading word list from file...")
+    
     # inFile: file
-    inFile = open(file_name, 'r')
+    inFile = open(absolute_path(WORDLIST_FILENAME), 'r')
+    
     # wordlist: list of strings
     wordlist = []
     for line in inFile:
         wordlist.extend([word.lower() for word in line.split(' ')])
     #print("  ", len(wordlist), "words loaded.")
+    
     inFile.close()
     
     return wordlist
@@ -42,17 +63,19 @@ def is_word(word_list, word):
     >>> is_word(word_list, 'asdf') returns
     False
     '''
+    assert isinstance(word_list, list), 'word_list is not a list'
+    assert isinstance(word, str), 'word is not a string'
+    
     word = word.lower()
     word = word.strip(" !@#$%^&*()-_+={}[]|\:;'<>?,./\"")
     
     return word in word_list
 
 
-### END HELPER CODE ###
 
-WORDLIST_FILENAME = 'words.txt'
 
-# you may find these constants helpful
+
+# helpful constants
 VOWELS_LOWER = 'aeiou'
 VOWELS_UPPER = 'AEIOU'
 CONSONANTS_LOWER = 'bcdfghjklmnpqrstvwxyz'
@@ -73,10 +96,8 @@ class SubMessage(object):
         
         self.message_text = text
         
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        file_name = '\\' + WORDLIST_FILENAME
-        file_path = dir_path + file_name
-        words_list = load_words(file_path)
+        # splits message_text by whitespace and checks how many words are valid
+        words_list = load_words(WORDLIST_FILENAME)
         self.valid_words = []
         split_message_text = text.split(' ')
         for word in split_message_text:
@@ -149,7 +170,7 @@ class SubMessage(object):
         '''
         new = ""
         for el in self.message_text:
-            if el in transpose_dict.keys():
+            if el in dict.keys(transpose_dict):
                 new += transpose_dict[el]
             else:
                 new += el
@@ -167,6 +188,8 @@ class EncryptedSubMessage(SubMessage):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
+        assert isinstance(text, str), 'text is not a string'
+        
         super().__init__(text)
 
     def decrypt_message(self):
@@ -187,28 +210,33 @@ class EncryptedSubMessage(SubMessage):
         
         Hint: use your function from Part 4A
         '''
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        file_name = '\\' + WORDLIST_FILENAME
-        file_path = dir_path + file_name
-        words_list = load_words(file_path)
+
+        words_list = load_words(WORDLIST_FILENAME)
         
-        permutations_words = []
+        # return all possible permutations of vowel string
         permutations_vowels_lower = permutations_of_string.permutations(VOWELS_LOWER)
+        
+        # loop over options, build and apply dict for each one
+        permutations_words = []
         for i in range(len(permutations_vowels_lower)):
             current_dict = super().build_transpose_dict(permutations_vowels_lower[i])
             new_text = super().apply_transpose(current_dict)
             new_text_split = new_text.split(' ')
             
+            # calculate how many words are valid for each transformation mapping
             permutations_words.append(0)
             for word in new_text_split:
                 if is_word(words_list, word):
                     permutations_words[i] += 1
-                    
+               
+        # find the maximum index for the best permutation  
         perm_index_max = max(range(len(permutations_words)), key=permutations_words.__getitem__)
         
+        # if the best still gives you no words, just return the message as is
         if permutations_words[perm_index_max] == 0:
             return (len(self.valid_words), self.message_text)
         
+        # reconstruction of best dict since chose not to save in memory
         best_dict = super().build_transpose_dict(permutations_vowels_lower[perm_index_max])
         best_text = super().apply_transpose(best_dict)
         
