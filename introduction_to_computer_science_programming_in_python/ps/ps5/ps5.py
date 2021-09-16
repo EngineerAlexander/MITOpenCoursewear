@@ -55,10 +55,11 @@ def process(url):
 # Problem 1
 
 class NewsStory():
+    """Class for storing data from parsed RSS feeds."""
     def __init__(self, guid, title, description, link, pubdate):
         """
         Creates an instance of a NewsStory class object.
-        Inputs: uniqueID, title, descritpion, link, publishdate
+        Inputs: uniqueID, title, descritpion, link, publishdate.
         """
         
         assert isinstance(guid, str), 'UniqueID is not a string'
@@ -108,6 +109,9 @@ class Trigger(object):
 
 # Problem 2
 class PhraseTrigger(Trigger):
+    """
+    Child class of Trigger. Used for creating triggers based off of keywords.
+    """
     def __init__(self, phrase):
         """
         Creates a PhraseTrigger object to detect phrases in NewsStorys.
@@ -119,10 +123,12 @@ class PhraseTrigger(Trigger):
         
     def is_phrase_in(self, input_text):
         """
-        Checks if self.phrase is contained within text string
+        Checks if self.phrase is contained within text string.
         Input: text string
         Output: True or False
         """
+        assert isinstance(input_text, str), 'input_text is not a string'
+        
         # conditioning input text and creating words list
         input_text = str.lower(input_text)
         for char in string.punctuation:
@@ -136,6 +142,7 @@ class PhraseTrigger(Trigger):
             phrase = phrase.replace(char, ' ')
         phrase_words = phrase.split()
         for phrase_word in phrase_words:
+            # if search word is in parsed text words and search phrase is a subset of text string
             if phrase_word in input_text_words and phrase in input_text:
                 pass
             else:
@@ -145,22 +152,52 @@ class PhraseTrigger(Trigger):
 
 # Problem 3
 class TitleTrigger(PhraseTrigger):
+    """
+    A child class of PhraseTrigger to search titles for phrases.
+    """
     def __init__(self, phrase):
+        """
+        Instanciate a TitleTrigger object.
+        Input: phrase for search
+        """
+        assert isinstance(phrase, str), 'phrase is not a string'
+        
         PhraseTrigger.__init__(self, phrase)
          
     def evaluate(self, story):
+        """
+        Method for determining if story passed test of filter
+        Input: story
+        Returns: true or false
+        """
         return self.is_phrase_in(story.get_title())
 
 # Problem 4
 class DescriptionTrigger(PhraseTrigger):
+    """
+    A child class of PhraseTrigger to search descriptions.
+    Input: phrase for search
+    """
     def __init__(self, phrase):
-         PhraseTrigger.__init__(self, phrase)
+        """
+        Creates an instance of a DescriptionTrigger.
+        Input: phrase for searching descriptions
+        """
+        assert isinstance(phrase, str), 'phrase is not a string'
+        
+        PhraseTrigger.__init__(self, phrase)
          
     def evaluate(self, story):
+        """
+        Method for determining if story passed test of filter
+        Input: story
+        Returns: true or false
+        """
         return self.is_phrase_in(story.get_description())
 
-# TIME TRIGGERS
+# TIME TRIGGERS note can change timezone to any choosing
 timezone = 'EST'
+
 # Problem 5
 class TimeTrigger(Trigger):
     def __init__(self, time):
@@ -168,16 +205,31 @@ class TimeTrigger(Trigger):
         Creates a TimeTrigger object for date searching capabilities
         Input: Time string in EST format: "%d %b %Y %H:%M:%S" ex. "3 Oct 2016 17:00:10 "
         """
+        assert isinstance(time, str), 'time is not a string'
+        
         self.date = datetime.strptime(time, "%d %b %Y %H:%M:%S").replace(tzinfo=pytz.timezone(timezone))
 
 # Problem 6
 class BeforeTrigger(TimeTrigger):
     def __init__(self, timecutoff):
+        """
+        Creates a TimeTrigger object for date searching capabilities
+        Input: Time string in EST format: "%d %b %Y %H:%M:%S" ex. "3 Oct 2016 17:00:10 "
+        """
+        assert isinstance(timecutoff, str), 'timecutoff is not a string'
+        
         TimeTrigger.__init__(self, timecutoff)
         
     def evaluate(self, story):
+        """
+        Method for determining if story passed test of filter
+        Input: story
+        Returns: true or false
+        """
         story_date = story.get_pubdate()
         
+        # handling for if no timezone information is present in datetime object
+        # (for comparison reasons)
         if story_date.tzinfo == None:
             story_date = story_date.replace(tzinfo=pytz.timezone(timezone))
         else:
@@ -187,6 +239,12 @@ class BeforeTrigger(TimeTrigger):
 
 class AfterTrigger(TimeTrigger):
     def __init__(self, timecutoff):
+        """
+        Creates a TimeTrigger object to filter for stories published after a given date
+        Input: Time string in EST format: "%d %b %Y %H:%M:%S" ex. "3 Oct 2016 17:00:10 "
+        """
+        assert isinstance(timecutoff, string), 'timecutoff is not a string'
+        
         TimeTrigger.__init__(self, timecutoff)
         
     def evaluate(self, story):
@@ -265,7 +323,8 @@ def filter_stories(stories, triggerlist):
 #======================
 # Problem 11
 FILENAME = 'triggers.txt'
-def read_trigger_config(filename):
+
+def read_trigger_config():
     """
     filename: the name of a trigger configuration file
 
@@ -379,7 +438,7 @@ def main_thread(master):
     # to what is currently in the news
     try:
         # code to test
-        t1 = TitleTrigger("Newsom")
+        t1 = TitleTrigger("police")
         #t2 = DescriptionTrigger("Afghanistan")
         #t3 = DescriptionTrigger("Afghanistan")
         #t4 = AndTrigger(t2, t3)
