@@ -1,7 +1,6 @@
 # 6.0001/6.00 Problem Set 5 - RSS Feed Filter
-# Name:
-# Collaborators:
-# Time:
+# Name: Alexander Ardalan
+# Collaborators: Alexander Ardalan
 
 import os
 import feedparser
@@ -57,10 +56,19 @@ def process(url):
 
 class NewsStory():
     def __init__(self, guid, title, description, link, pubdate):
-        """Inputs: uniqueID, title, descritpion, link, publishdate"""
+        """
+        Creates an instance of a NewsStory class object.
+        Inputs: uniqueID, title, descritpion, link, publishdate
+        """
+        
+        assert isinstance(guid, str), 'UniqueID is not a string'
+        assert isinstance(title, str), 'title is not a string'
+        assert isinstance(description, str), 'description is not a string'
+        assert isinstance(link, str), 'link is not a string'
+        assert isinstance(pubdate, datetime), 'pubdate is not a datetime'
+        
         self.guid = guid
         self.title = title
-        print(description)
         self.description = description
         self.link = link
         self.pubdate = pubdate
@@ -102,10 +110,10 @@ class Trigger(object):
 class PhraseTrigger(Trigger):
     def __init__(self, phrase):
         """
-        Creates a PhraseTrigger object to detect phrases
+        Creates a PhraseTrigger object to detect phrases in NewsStorys.
         Input: phrase
         """
-        assert isinstance(phrase, str), 'Input is not a string'
+        assert isinstance(phrase, str), 'phrase is not a string'
         
         self.phrase = phrase
         
@@ -127,7 +135,6 @@ class PhraseTrigger(Trigger):
         for char in string.punctuation:
             phrase = phrase.replace(char, ' ')
         phrase_words = phrase.split()
-        
         for phrase_word in phrase_words:
             if phrase_word in input_text_words and phrase in input_text:
                 pass
@@ -244,12 +251,10 @@ def filter_stories(stories, triggerlist):
     stories_to_return = []
     
     for story in stories:
-        return_this_story = True
         for trigger in triggerlist:
-            if not trigger.evaluate(story):
-                return_this_story = False
-        if return_this_story:
-            stories_to_return.append(story)
+            if trigger.evaluate(story) == True:
+                stories_to_return.append(story)
+                break
     
     return stories_to_return # just return stories here for no filtering
 
@@ -280,73 +285,87 @@ def read_trigger_config(filename):
         if not (len(line) == 0 or line.startswith('//')):
             lines.append(line)
 
-    # TODO: Problem 11
-    # line is the list of lines that you need to parse and for which you need
-    # to build triggers
-    trigger_list = []
-    
-    t_list = []
-    trigger_type_list = []
-    trigger_string_list = []
-    trigger1_list = []
-    trigger2_list = []
-    for string in line:
-        line_split = line.split(',')
+    trigger_dict = {}
+
+    for string in lines:
+        # common code for TITLE DESCRIPTION BEFORE AND AFTER TRIGGERS
+        line_split = string.split(',')
         
-        t_list.append(line_split[0])
-        trigger_type_list.append(line_split[1])
-        if line_split[1].upper() == 'TITLE' or 'DESCRIPTION' or 'BEFORE' or 'AFTER':
-            trigger_string_list.append(line_split[2])
-            trigger1_list.append(None)
-            trigger2_list.append(None)
-        elif line_split[1].upper() == 'NOT':
-            trigger_string_list.append(None)
-            trigger1_list.append(build_trigger(line_split[0], trigger_type_list[i], trigger_string_list[i], trigger1_list[i], trigger2_list[i]))
-            trigger2_list.append(None)
-        elif line_split[1].upper() == 'AND' or 'OR':
-            trigger_string_list.append(None)
-            trigger1_list.append(line_split[0])
-            trigger2_list.append(None)
-        else:
-            pass
+        t = line_split[0]
+        trigger_type = line_split[1]
+        trigger_string = line_split[2]
+        
+        # build all non-composite triggers first
+        if (trigger_type == 'TITLE') or (trigger_type == 'DESCRIPTION') or (trigger_type == 'BEFORE') or (trigger_type == 'AFTER'):
+            trigger_dict[t] = build_trigger(t, trigger_type, trigger_string)       
+
+    for string in lines:
+        # common code for NOT AND OR TRIGGERS
+        line_split = string.split(',')
+        t = line_split[0]
+        trigger_type = line_split[1]
+        trigger1 = line_split[2]
+        
+        # build all composite triggers using non-composite triggers we built first
+        if (trigger_type == 'NOT'):
+            trigger_dict[t] = build_trigger_from_trigger(t, trigger_type, trigger_dict[trigger1])
+
+        elif (trigger_type == 'AND') or (trigger_type == 'OR'):
+            trigger2 = line_split[3]
+            trigger_dict[t] = build_trigger_from_trigger(t, trigger_type, trigger_dict[trigger1], trigger_dict[trigger2])
     
-    for i in range(len(t_list)):
-        trigger_list.append(build_trigger(t_list[i], trigger_type_list[i], trigger_string_list[i], trigger1_list[i], trigger2_list[i]))
+    implement_triggers = []
+    for string in lines:
+        line_split = string.split(',')
+        if line_split[0] == 'ADD':
+            for i in range(1, len(line_split)):
+                implement_triggers.append(trigger_dict[line_split[i]])
+    
+    return implement_triggers
 
-    return trigger_list
+# Can use variable or default arguments here to combine functions
 
-# USE VARIABLE ARGUMENTS!
-
-def build_trigger(t, trigger_type, trigger_string, trigger1 = None, trigger2 = None):
+def build_trigger(t, trigger_type, trigger_string):
     """
-    
+    test
     """
     assert isinstance(t, str), 'Input for t (identity) number is not a string'
     assert isinstance(trigger_type, str), 'Input for Trigger Type is not a string'
     
-    assert isinstance(trigger_string, str or None), 'Input for Trigger String is not a string or Nonetype'
-    assert isinstance(trigger1, Trigger), 'Input for Trigger1 is not a Trigger instance or Nonetype'
-    assert isinstance(trigger2, Trigger), 'Input for Trigger2 is not a Trigger instance or Nonetype'
+    assert isinstance(trigger_string, str), 'Input for Trigger String is not a string or Nonetype'
     
-    if trigger_type.upper() == 'TITLE':
+    if str.upper(trigger_type) == 'TITLE':
         return TitleTrigger(trigger_string)
         
-    elif trigger_type.upper() == 'DESCRIPTION':
+    elif str.upper(trigger_type) == 'DESCRIPTION':
         return DescriptionTrigger(trigger_string)
     
-    elif trigger_type.upper() == 'AFTER':
+    elif str.upper(trigger_type) == 'AFTER':
         return AfterTrigger(trigger_string)
     
-    elif trigger_type.upper() == 'BEFORE':
+    elif str.upper(trigger_type) == 'BEFORE':
         return BeforeTrigger(trigger_string)
     
-    elif trigger_type.upper() == 'NOT':
+    else:
+        raise Exception("Trigger class has no subclass of type '%s'" % trigger_type)
+    
+def build_trigger_from_trigger(t, trigger_type, trigger1, trigger2 = None):
+    """
+    Builds a trigger that is a derivative (composite) of one or two other triggers
+    """
+    assert isinstance(t, str), 'Input for t (identity) number is not a string'
+    assert isinstance(trigger_type, str), 'Input for Trigger Type is not a string'
+    
+    assert isinstance(trigger1, Trigger), 'Input for Trigger1 is not a Trigger instance or Nonetype'
+    assert isinstance(trigger2, Trigger or None), 'Input for Trigger2 is not a Trigger instance or Nonetype'
+    
+    if str.upper(trigger_type) == 'NOT':
         return NotTrigger(trigger1)
     
-    elif trigger_type.upper() == 'AND':
+    elif str.upper(trigger_type) == 'AND':
         return AndTrigger(trigger1, trigger2)
     
-    elif trigger_type.upper() == 'OR':
+    elif str.upper(trigger_type) == 'OR':
         return OrTrigger(trigger1, trigger2)
     
     else:
@@ -360,15 +379,16 @@ def main_thread(master):
     # to what is currently in the news
     try:
         # code to test
-        #t1 = TitleTrigger("Afghanistan")
+        t1 = TitleTrigger("Newsom")
         #t2 = DescriptionTrigger("Afghanistan")
         #t3 = DescriptionTrigger("Afghanistan")
         #t4 = AndTrigger(t2, t3)
         #triggerlist = [t1, t4]
+        triggerlist = [t1]
 
         # Problem 11
         # TODO: After implementing read_trigger_config, uncomment this line 
-        triggerlist = read_trigger_config('triggers.txt')
+        #triggerlist = read_trigger_config('triggers.txt')
         
         # HELPER CODE - you don't need to understand this!
         # Draws the popup window that displays the filtered stories

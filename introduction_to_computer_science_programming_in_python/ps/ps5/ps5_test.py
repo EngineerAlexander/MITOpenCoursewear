@@ -222,6 +222,7 @@ class ProblemSet5(unittest.TestCase):
         filtered_stories = filter_stories(stories, triggers)
         for story in stories:
             self.assertTrue(story in filtered_stories)
+        print(filtered_stories)
         filtered_stories = filter_stories(stories, [self.ft])
         self.assertEqual(len(filtered_stories), 0)
 
