@@ -1,3 +1,7 @@
+# 6.0001/6.00 Problem Set 4 - Caesar Cipher
+# Name: Alexander Ardalan
+# Collaborators: Alexander Ardalan
+
 # MIT CAESAR CIPHER HOMEWORK.
 # THERE ARE SOME WAYS THAT THIS COULD HAVE BEEN CODED BETTER,
 # HOWEVER I STUCK TO THEIR .PDF CLASS TEMPLATE AS BEST I COULD

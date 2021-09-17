@@ -1,3 +1,7 @@
+# 6.0001/6.00 Problem Set 4 - Substitution Cipher
+# Name: Alexander Ardalan
+# Collaborators: Alexander Ardalan
+
 import os
 import permutations_of_string
 

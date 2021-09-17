@@ -110,7 +110,7 @@ class Trigger(object):
 # Problem 2
 class PhraseTrigger(Trigger):
     """
-    Child class of Trigger. Used for creating triggers based off of keywords.
+    Child class of Trigger. Used for creating triggers based off of keywords or 'phrases'.
     """
     def __init__(self, phrase):
         """
@@ -168,8 +168,10 @@ class TitleTrigger(PhraseTrigger):
         """
         Method for determining if story passed test of filter
         Input: story
-        Returns: true or false
+        Returns: True or False
         """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         return self.is_phrase_in(story.get_title())
 
 # Problem 4
@@ -191,8 +193,10 @@ class DescriptionTrigger(PhraseTrigger):
         """
         Method for determining if story passed test of filter
         Input: story
-        Returns: true or false
+        Returns: True or False
         """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         return self.is_phrase_in(story.get_description())
 
 # TIME TRIGGERS note can change timezone to any choosing
@@ -200,6 +204,7 @@ timezone = 'EST'
 
 # Problem 5
 class TimeTrigger(Trigger):
+    """Class for time-based filtering of NewsStory's"""
     def __init__(self, time):
         """
         Creates a TimeTrigger object for date searching capabilities
@@ -211,6 +216,10 @@ class TimeTrigger(Trigger):
 
 # Problem 6
 class BeforeTrigger(TimeTrigger):
+    """
+    Child class of TimeTrigger.
+    Used for detecting if a NewsStory's pubdate was before a certain date.
+    """
     def __init__(self, timecutoff):
         """
         Creates a TimeTrigger object for date searching capabilities
@@ -224,8 +233,10 @@ class BeforeTrigger(TimeTrigger):
         """
         Method for determining if story passed test of filter
         Input: story
-        Returns: true or false
+        Returns: True or False
         """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         story_date = story.get_pubdate()
         
         # handling for if no timezone information is present in datetime object
@@ -236,18 +247,29 @@ class BeforeTrigger(TimeTrigger):
             story_date = story_date.astimezone(pytz.timezone(timezone))
 
         return self.date > story_date
-
+    
 class AfterTrigger(TimeTrigger):
+    """
+    Child class of TimeTrigger.
+    Used for detecting if a NewsStory's pubdate was after a certain date.
+    """
     def __init__(self, timecutoff):
         """
         Creates a TimeTrigger object to filter for stories published after a given date
         Input: Time string in EST format: "%d %b %Y %H:%M:%S" ex. "3 Oct 2016 17:00:10 "
         """
-        assert isinstance(timecutoff, string), 'timecutoff is not a string'
+        assert isinstance(timecutoff, str), 'timecutoff is not a string'
         
         TimeTrigger.__init__(self, timecutoff)
-        
+
     def evaluate(self, story):
+        """
+        Method for determining if a story meets filter critera
+        Input: NewsStory
+        Returns: True or False
+        """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         story_date = story.get_pubdate()
         
         if story_date.tzinfo == None:
@@ -263,36 +285,66 @@ class NotTrigger(Trigger):
     # note can't change what parameters evaluate takes in cause it'll break polymorphism.
     # evaluate still needs to take in story object
     """
-    
+    A subclass of Trigger. Used for creating composite not triggers (negating other triggers)
     """
     def __init__(self, trigger):
+        """
+        Define a NotTrigger instance. Negates how another trigger works.
+        Input: trigger
+        """
         self.trigger = trigger
         
     def evaluate(self, story):
+        """
+        Input: story
+        Return: True or False
+        """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         return not self.trigger.evaluate(story) # note don't need to pass self here since trigger is another object type
 
 # Problem 8
 class AndTrigger(Trigger):
     """
-    
+    A subclass of Trigger. Used for creating composite and triggers.
     """
     def __init__(self, trigger1, trigger2):
+        """
+        Define an AndTrigger instance. Alters how two other triggers work with an AND operator
+        Input: trigger1, trigger2
+        """
         self.trigger1 = trigger1
         self.trigger2 = trigger2
         
     def evaluate(self, story):
+        """
+        Input: story
+        Return: True or False
+        """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         return self.trigger1.evaluate(story) and self.trigger2.evaluate(story)
 
 # Problem 9
 class OrTrigger(Trigger):
     """
-    
+    A subclass of Trigger. Used for creating composite or triggers.
     """
     def __init__(self, trigger1, trigger2):
+        """
+        Define an OrTrigger instance. Alters how two other triggers work with an OR operator
+        Input: trigger1, trigger2
+        """
         self.trigger1 = trigger1
         self.trigger2 = trigger2
         
     def evaluate(self, story):
+        """
+        Input: story
+        Return: True or False
+        """
+        assert isinstance(story, NewsStory), 'story is not a NewsStory'
+        
         return self.trigger1.evaluate(story) or self.trigger2.evaluate(story)
 
 #======================
@@ -302,10 +354,14 @@ class OrTrigger(Trigger):
 # Problem 10
 def filter_stories(stories, triggerlist):
     """
-    Takes in a list of NewsStory instances.
-
-    Returns: a list of only the stories for which a trigger in triggerlist fires.
+    Function for taking in a list of NewsStories and a list of Triggers
+    then returning a list of stories that passed the filters.
+    Input: stories (list), triggerlist (list)
+    Returns: filtered_story_list
     """
+    assert isinstance(stories, list), 'stories must be a list'
+    assert isinstance(triggerlist, list), 'triggerlist must be a list'
+    
     stories_to_return = []
     
     for story in stories:
@@ -322,15 +378,17 @@ def filter_stories(stories, triggerlist):
 # User-Specified Triggers
 #======================
 # Problem 11
-FILENAME = 'triggers.txt'
 
 def read_trigger_config():
     """
-    filename: the name of a trigger configuration file
+    FILENAME: the name of a trigger configuration file
 
     Returns: a list of trigger objects specified by the trigger configuration
         file.
     """
+    # config file for triggers
+    FILENAME = 'triggers.txt'
+    
     # We give you the code to read in the file and eliminate blank lines and
     # comments. You don't need to know how it works for now!
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -373,8 +431,9 @@ def read_trigger_config():
             trigger2 = line_split[3]
             trigger_dict[t] = build_trigger_from_trigger(t, trigger_type, trigger_dict[trigger1], trigger_dict[trigger2])
     
+    # assemble final list from add line
     implement_triggers = []
-    for string in lines:
+    for string in lines: # questionable O but not many triggers
         line_split = string.split(',')
         if line_split[0] == 'ADD':
             for i in range(1, len(line_split)):
@@ -386,7 +445,9 @@ def read_trigger_config():
 
 def build_trigger(t, trigger_type, trigger_string):
     """
-    test
+    Function to build a non-composite trigger.
+    Inputs: t (trigger ID), trigger_type (TITLE, DESCRIPTION, AFTER, BEFORE), trigger_string
+    Output: Trigger of trigger_type
     """
     assert isinstance(t, str), 'Input for t (identity) number is not a string'
     assert isinstance(trigger_type, str), 'Input for Trigger Type is not a string'
@@ -410,7 +471,9 @@ def build_trigger(t, trigger_type, trigger_string):
     
 def build_trigger_from_trigger(t, trigger_type, trigger1, trigger2 = None):
     """
-    Builds a trigger that is a derivative (composite) of one or two other triggers
+    Function to build a composite trigger (derivative of other triggers).
+    Inputs: t (trigger ID), trigger_type (NOT, AND, OR), trigger1, trigger2
+    Output: Trigger of trigger_type
     """
     assert isinstance(t, str), 'Input for t (identity) number is not a string'
     assert isinstance(trigger_type, str), 'Input for Trigger Type is not a string'

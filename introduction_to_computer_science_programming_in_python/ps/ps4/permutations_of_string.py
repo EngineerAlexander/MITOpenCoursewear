@@ -1,3 +1,7 @@
+# 6.0001/6.00 Problem Set 4 - Permutations of String
+# Name: Alexander Ardalan
+# Collaborators: Alexander Ardalan
+
 # base case = if input is 1 or nothing then answer is that thing or empty list
 # if sequence is longer than 1 character, identify simpler version of problem
 
