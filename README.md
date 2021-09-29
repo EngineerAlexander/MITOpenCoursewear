@@ -11,3 +11,8 @@ Course Number-Course Name-Date-Link:
 
 6.042J-Mathematics for Computer Science-9/26/2021
 -https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-042j-mathematics-for-computer-science-spring-2015/
+
+6.004-Computation Structures-9/28/2021
+-https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/
+6-004-computation-structures-spring-2017/
+
