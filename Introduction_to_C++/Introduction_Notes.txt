@@ -1,0 +1,125 @@
+Tokens:
+keywords (words with special meaning to the compiler)
+identifiers (names of things not built into language)
+literals (constant values in source code)
+operators (math or logic)
+punctuation/separators (structure and command program)
+whitespace (ignored by compiler)
+
+// is for comments in c++, for larger blocks: /* xxxxxx */
+
+#include is a preprocessor command that includes another file
+
+int main(){} is the function that executes at startup. {} defines a block and groups stuff in it
+
+:: scope resolution operator (ex: std::) says to look in a certain namespace for an identifier
+an alternative to putting this everywhere is to put using namespace std; before
+
+in string literals you can define special characters called escape sequences. the common ones:
+\n newline
+\r returns cursor to start of line
+\t tab
+\\ backslash
+\some integer x for character represented by x
+
+return 0 tells operating system it has completed
+
+everything except preprocessor commands and blocks {} end with a ;
+
+MOST USED BUILT-IN DATA TYPES:
+char single text character or small integer, 1 byte
+
+ALL INTEGER TYPES------
+short
+int larger integer, 4 bytes
+long
+
+bool known, 1byte
+
+ALL FLOATING POINT TYPES----
+float
+double doubly precise floating point number, 8 bytes
+double long
+
+signed vs unsigned just means if it can support a negative number.
+ranges for signed are shifted negative
+ranges for unsigned start at 0
+
+make sure operations are on compatible types. also an operator produces a value of the same type
+
+char * is the type of text string
+
+must declare variables before using to identify type to compiler
+NOTE CAN DECLARE IN-LINE LIKE:
+int z = 4 + 2 (cleaner here so it is preffered)
+
+use cin >> just like cout << but declare and pass to variable before
+
+ERRORS:--------------------------
+COMPILATION:
+problems raised by compiler from violations of syntax rules or misuse of types typically
+
+RUNTIME:
+when the code runs but doesn't do what you wanted it to
+
+Can use #define PI 3.14159 ex. at begining of code to define constants in your code
+
+const int pathwidth = 100 ex to define immutable constants in the code
+
+rvalue on rhs can be anything really even another assignment like y = (x=5)
+
+NOTE IMPORTANT ON INCREMENTS:
+    ++a will increment a and then return the value (so it will return one greater than the original value)
+    a++ will return the current value and then increment
+    --a will decrement a and then return the value (so it will return one less than the original value)
+    a-- will return the current value and then decrement
+
+ASSIGNMENT OPERATORS:
++=, -=, *=, /=, %=
+
+NOTE: CASTING TO SOMETHING WITH LESS PRECISION MUST BE EXCPLICITLY DEFINED:
+    EX: int x = (int)5.0;
+
+NOTE THAT OPERATORS WILL GET CAST TO THE HIGHER MEMORY VARIABLE TYPE and that is what will be returned
+
+ORDER OF OPERATIONS:
+    1 () [] -> . :: Grouping, scope, array/member access
+    2 ! ˜ * & sizeof (type cast) ++ – (most) unary operations, sizeof and typecasts
+    3 * / % Multiplication, division, modulo********
+    4 + - Addition and subtraction
+    5 << >> Bitwise left and right shift
+    6 < <= > >= Comparisons: less than, etc.
+    7 == != Comparisons: equal and not equal
+    8 & Bitwise AND
+    9 ˆ Bitwise exclusive OR
+    10 | Bitwise inclusive (normal) OR
+    11 && Logical AND
+    12 || Logical OR
+    13 ?: Conditional expression (ternary operator)
+    14 = += -= *= /= %=, etc. Assignment operators
+    15 , Comma operator
+
+    Ternary operator ?: can define conditionals and then specify what happens if true/false all on one line
+
+        ex: y = a > b ? true : false;
+
+SWITCH STATEMENT:
+
+switch(n){
+    case 1:
+        cout << "n is 1";
+        break;
+    case 2:
+        cout << "n is even";
+        break;
+    default:
+        cout << "idk what n is";
+        break;
+}
+
+note break will break out of loop of switch statement
+
+continue continues to next iteration
+
+FOR LOOPS:
+for(int i = 0; i <= 10; ++i)

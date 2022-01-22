@@ -1,0 +1,64 @@
+RELATIONAL OPERATORS:
+> Greater than
+>= Greater than or equal to
+< Less than
+<= Less than or equal to
+== Equal to
+!= Not equal to
+
+LOGICAL OPERATORS:
+&& and
+|| or
+! not
+
+note false = 0 and anything else in the language holds a true value
+
+NOTE don't need scope in if/else/else if if it's only one line (so no {} for only one line-ers)
+
+SWITCH SYNTAX: NOTE SPECIAL SYNTAX: NO BREAK IN DEFAULT, BREAK IN EACH CASE, AND :
+switch(expression)
+{
+case constant1:
+statementA1;
+statementA2;
+...
+break;
+
+case constant2:
+statementB1;
+statementB2;
+...
+break;
+
+...
+
+default:
+statementZ1;
+statementZ2;
+...
+
+}
+
+***while loops behave normally
+
+DO-WHILE LOOPS: gurantees loop is executed at least once (so checks after)
+
+do
+{
+
+}
+while(condition);
+
+for loops act the same with folowing syntax (NOTE: i++ vs ++i doesn't matter here):
+for(int i = 0; i < 10; i++)
+{
+    //this would execute 10 times
+}
+NOTE IF COUNTER VARIABLE IS ALREADY DEFINED YOU DON'T NEED TO DEFINE IT:
+for(; counter < 10; counter++)
+{
+    
+}
+
+a for loop can be expressed by a while loop and vice-versa
+

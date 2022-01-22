@@ -16,3 +16,6 @@ Course Number-Course Name-Date-Link:
 -https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/
 6-004-computation-structures-spring-2017/
 
+6.096-Introduction to C++-1/20/2022
+-https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/
+6-096-introduction-to-c-january-iap-2011/
