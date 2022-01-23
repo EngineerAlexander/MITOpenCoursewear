@@ -1,0 +1,98 @@
+When setting/accesing a variable in C++:
+1.	 Look up the address that the variable name corresponds to
+2.	 Go to that location in memory and retrieve or set the value it contains
+
+You can do either of these independently with the & and * operators:
+1.	 &x evaluates to the address of x in memory.
+2. *( &x ) takes the address of x and dereferences it – it retrieves the value at that
+location in memory. *( &x ) thus evaluates to the same thing as x. 
+
+Pointers (memory addresses) are like more flexible pass by reference:
+Allow you to:
+1. manipulate complex data-structures effeciently even if data is scatered
+2. use polymorphism by calling functions on data without knowing kind of data
+
+Declare pointer:
+int *ptr = &x; // declares pointer that points to variable x's address
+
+Once a pointer is declared we can dereference it to access it's value:
+EX: cout << *ptr1 << endl;
+EX: *ptr = a; *ptr += 1; //note used as lhv (left-hand-value)
+
+void func(int *x){...} //example passing pointer similar to pass-by-reference
+
+NOTE FOR CONSTANT POINTERS YOU MIGHT WANT TO RESTRICT CHANGING OF:
+1. THE MEMORY ADDRESS (POINTER ITSELF)
+2. THE VALUE AT THAT MEMORY ADDRESS (THE VALUE IT POINTS TO)
+
+const int *ptr; changeable pointer to a constant unchangeable integer
+const * int ptr; unchangeable pointer to changeable integer
+cont int * ptr; both unchangeable
+
+if you dereference a pointer that doesn't point to valid data with &a you get a runtime error
+General rule is to set pointers to 0 "null pointer" to signal that it is not currently valid.
+Before dereferencing, check if pointer is zero.
+
+Dereferencing pointers to data that has been erased from memory also usually causes runtime
+errors. Example:
+int * myFunc ()
+{
+    int phantom = 4;
+    return & phantom ;
+}
+phantom is deallocated when myFunc exits, so the pointer the function returns is invalid.
+As with any other variable, the value of a pointer is undefined until it is initialized, so it
+may be invalid.
+
+for stuff like: void f(int &x) and call f(y), reference variable x becomes - AN ALIAS - for the value of y in memory
+Can declare these locally in scope as well:
+int y;
+int &x = y;
+After this changing either x or y will change them both because they are two names for the same thing.
+
+References are just pointers that are dereferenced every time they are used. Just like pointers, you can pass them around, return them, set other references to them, etc. The only
+differences between using pointers and using references are:
+•	 References are sort of pre-dereferenced – you do not dereference them explicitly.
+•	 You cannot change the location to which a reference points, whereas you can change
+the location to which a pointer points. Because of this, references must always be
+initialized when they are declared.
+•	 When writing the value that you want to make a reference to, you do not put an &
+before it to take its address, whereas you do need to do this for pointers.
+
+*****************IMPORTANT****************************
+The usage of the * and & operators with pointers/references can be confusing. The * operator
+is used in two different ways:
+1. When declaring a pointer, * is placed before the variable name to indicate that the
+variable being declared is a pointer – say, a pointer to an int or char, not an int or
+char value.
+2. When using a pointer that has been set to point to some value, * is placed before the
+pointer name to dereference it – to access or set the value it points to.
+
+A similar distinction exists for &, which can be used either
+1. to indicate a reference data type (as in int &x;), or
+2. to take the address of a variable (as in int *ptr = &x;).
+******************************************************
+
+NOTE: AN ARRAY IS JUST A POINTER TO THE MEMORY ADDRESS OF THE FIRST VALUE IN THAT ARRAY
+STUFF LIKE arrayINT[5] JUST MEANS RETURN ELEMENT 5 AWAY FROM STARTING ELEMENT OF arrayINT
+
+CAN DO ARITHMETIC WITH POINTERS TO MOVE AROUND MEMORY LOCATIONS
+most common for array elements
+Example:
+long array[] = {1, 2, 3, 4};
+long *ptr = array;
+ptr++ // points to 2nd element's memory address
+long *ptr2 = array + 3 // points to 4th element's memory address
+ptr2 - ptr1 // gives number of elements between the pointers
+
+myArray[3] is *(myArray + 3) ARE THE SAME THINGS
+
+Strings are just a pointer that points to the first memory address of a string of chars
+char courseName1 [] = {’6’, ’.’, ’0’, ’9’, ’6’, ’\0 ’ }; //can edit elements
+char *courseName2 = " 6.096 "; //cannot edit elements
+
+NOTE HERE p and q point to exactly the same spot in memory:
+const int ARRAY_LEN = 100;
+int arr [ARRAY_LEN];
+int *p = arr ;
+int *q = &arr [0];

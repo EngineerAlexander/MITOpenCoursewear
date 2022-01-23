@@ -1,0 +1,52 @@
+up to one value may be returned from a function. function can be of void and return nothing too. just break from it with return; at the end
+
+OVERLOADING FUNCTIONS CAN BE DONE: SAME NAME DIFFERENT TYPES, SAME NAME DIFFERENT NUMBER OF ARGUMENTS
+
+MAKE SURE FUNCTION DECLARATIONS OCCUR BEFORE INVOCATIONS. IF FUNCTION IS DEFINED AFTER CALL NEED A FUNCTION PROTOTYPE:
+int printS(int); //before call at least
+NOTE THESE WOULD ALSO WORK FOR WHATEVER:
+int printS(int g);
+int printS(int z);
+
+header files can be used to inport function prototypes:
+// myLib.h - header
+// contains prototypes
+int square(int);
+int cube (int);
+
+// myLib.cpp - implementation
+#include "myLib.h"
+int cube(int x)
+{
+ return x*square(x);
+}
+int square(int x)
+{
+ return x*x;
+}
+
+RECURSION: FUNCTIONS CAN CALL THEMSELVES:
+ex: fib(n) = fib(n-1) + fib(n-2)
+
+PASS BY VALUE VS PASS BY REFERENCE:
+so far everything has been pass by value that just makes a copy
+TO PASS BY REFERENCE: void increment(int &a)
+
+HOW TO RETURN MULTIPLE VALUES:
+YOU NEED TO PASS THROUGH REFERENCE
+int divide(int numerator, int denominator, int &remainder) {
+ remainder = numerator % denominator;
+ return numerator / denominator;
+}
+THIS TECHNICALLY ALSO RETURNS REMAINDER BY UPDATING IN THE SCOPE ABOVE
+
+IMPORTANT!! *********
+Libraries are generally distributed as the
+header file containing the prototypes, and a
+binary .dll/.so file containing the (compiled)***
+implementation
+– Don’t need to share your .cpp code
+- user only needs to know headers to use and Linker part of complier takes care of linking
+
+#include<cmath> includes stuff like pow and sqrt! no need to re-invent the wheel
+

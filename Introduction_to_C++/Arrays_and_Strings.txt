@@ -1,0 +1,46 @@
+An array is a fixed number of elements of the same type stored sequentially in memory.
+type arrayName[dimension];
+zero-indexed
+
+Good practice to initialize elements in array to avoid unexpected results:
+int arrayInt[3] = {0, 0, 0};
+int arrayInt[] = {0, 0, 0}; // these two will do the same thing... the compiler will figure it out
+NOTE CAN ALSO INITIALIZE ONE BY ONE
+int arrayInt[3];
+arrayInt[0] = 0;
+arrayInt[1] = 0;
+arrayInt[2] = 0;
+
+to use arrays in functions:
+void functionTest(int arrayInt[])
+
+EXAMPLE USE:
+int sum(const int arrayInt[], int length)
+{
+    long sum = 0;
+    for(int i = 0; i<length; sum += arrayInt[i++]);
+}
+
+C++ also supports the creation of multidimensional arrays, through the addition of more than
+one set of brackets. Thus, a two-dimensional array may be created by the following:
+EXAMPLE: int arrayInt[5][5]; //25 elements
+//remember to initialize after
+
+NOTE THAT WHEN PASSING MULTIDIMENSIONAL ARRAYS TO FUNCTIONS: need to specify all but first dimension size for compiler
+void functionTest(arrayInt[][5]);
+Memory of multidemnsional arrays are the same as a largre single-dimension array it is just an abstraction for programing
+
+STRINGS:
+char helloworld[] = { 'H', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd', '!', '\0' };
+NOTE: ENDLINE CHARACTER '\0' USED TO SPECIFY END OF STRING
+note: CAN ALSO INITIALIZE SAME THING AS A STRING LITERAL:
+char helloworld[] = "Hello, world!" // compilter automatically inserts endline character
+
+COMMON C/C++ STRING LIBRARIES:
+• cctype (ctype.h): character handling
+• cstdio (stdio.h): input/output operations
+• cstdlib (stdlib.h): general utilities
+• cstring (string.h): string manipulation
+DOCUMENTATION FOR THESE LIBRARIES:
+http://www.cplusplus.com/reference/
+
