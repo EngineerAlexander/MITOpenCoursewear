@@ -52,16 +52,56 @@ using namespace std;
 //     cout << number;
 // }
 
-void printNum(int a); //header
+//--------------------------------------------------------------------------------------------
 
-int main()
-{
-    printNum(35);
-    return 0;
+// void printNum(int a); //header to make the below code work
 
-}
+// int main()
+// {
+//     printNum(35);
+//     return 0;
 
-void printNum(int a)
-{
-    cout << a;
-}
+// }
+
+// void printNum(int a)
+// {
+//     cout << a;
+// }
+
+//--------------------------------------------------------------------------------------------
+
+// int difference(const int x, const int y)
+// {
+
+//     int diff = abs(x - y); // abs (n) returns absolute value of n
+
+//     return diff;
+// }
+
+// int main ()
+// {
+
+//     cout << difference(24, 1238);
+
+//     return 0;
+
+// }
+
+//--------------------------------------------------------------------------------------------
+
+// const int ARRAY_LEN = 10;
+
+// int main()
+// {
+//     int arr[ARRAY_LEN] = {10};
+
+//     int *ptr1 = arr;
+
+//     //int *ptr2 = &arr[ARRAY_LEN - 1]; // this works
+//     int *ptr2 = arr + ARRAY_LEN - 1; // this also works
+
+//     cout <<  endl << *ptr1 << " " << *ptr2 << endl;
+
+//     return 0;
+// }
+
