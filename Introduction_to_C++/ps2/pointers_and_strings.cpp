@@ -40,15 +40,6 @@ void swap(int *a, int *b)
 }
 
 //function that swaps where 2 pointers point ***tricky***
-void swapP(int **a, int **b)
-{
-    int *temp = *a;
-
-    *a = *b;
-    *b = temp;
-
-    return;
-}
 
 int main()
 {
@@ -71,16 +62,6 @@ int main()
     cout << endl;
 
     // swap where pointers point
-    int *ptr1 = &a;
-    int *ptr2 = &b;
-
-    int *ptr3 = &ptr1;
-    int *ptr4 = &ptr2;
-
-    cout << "a = " << a << ", b = " << b << endl;
-    swapP(ptr3, ptr4);
-    cout << "a = " << a << ", b = " << b << endl;
-    cout << endl;
 
     return 0;
 }
