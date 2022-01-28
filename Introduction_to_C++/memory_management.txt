@@ -1,0 +1,124 @@
+REVIEW FOR C++ CLASSES
+
+example constructor:
+
+#include<iostream>
+using namespace std;
+
+//DEFAULT CONSTRUCTOR
+class Integer
+{
+    public:
+    int val;
+    Integer() //same name as class
+    {
+        val = 0;
+        cout << "This is the default constructor (no arguments)" << endl;
+    }
+};
+
+int main()
+{
+    Integer i;
+}
+
+------------------------------------------------------------------------------
+In an array, default constructor is invoked on each object:
+Integer arr[3]
+
+constructors can acept parameters too:
+Integer(int v)
+{
+    val = v; cout << "constructor with arg " << v << endl;
+}
+then call like:
+    Integer i(3);
+    OR
+    Integer j = 3;
+
+NOTE: If a default constructor isn't explicitly defined and one with parameters is,
+THEN THE DEFAULT CONSTRUCTOR ISN'T AVAILABLE AND YOU CAN'T DEFINE ARRAYS WITHOUT INITIALIZING
+Integer a[] = { Integer(2), Integer(5) }; // ok
+Integer b[2]; // error
+FOR THIS FUNCTIONALITY YOU MUST EXPLICITLY DEFINE:
+1.
+Integer() {
+ val = 0;
+ }
+2.
+OR AN INITIAL VALUE LIKE: Integer(int v = 0) 
+
+if method argument and field have same names, you can refer to field with:
+this -> val = val; //this->val is a shorthand for (*this).val
+class Integer {
+public:
+ int val;
+ Integer(int val = 0) {
+ this->val = val;
+ }
+};
+------------------------------------------------------------------------------
+variables going out of scope clear the memory. they stay in the same scope they're defined and lower
+
+YOU CAN AVOID THIS BY MANUALLY OVERRIDING THIS BEHAVIOUR:
+use the new operator
+
+int *x = new int;
+this will allocate the memory until you manually de-allocate it
+
+Terminology note:
+if using: int x -> memory is allocated to a region called the stack
+if using: new int x -> memory is allocated to a region called the heap
+delete will de-alocate memory that was allocated to the heap with new
+NOTE: delete takes a pointer
+int *x = new int;
+// use memory allocated by new
+delete x;
+
+BE SURE TO DELETE THIS MEMORY WHEN YOU'RE DONE USING IT!!!!!!!!!!
+
+for arrays of variable size, make sure to allocate with new accordingly:
+THIS IS IMPORTANT FOR USER/VARIABLE INPUT!!!!!!!!!!!!
+ int numItems;
+ cout << "how many items?";
+ cin >> numItems;
+ int *arr = new int[numItems];
+ delete[] arr;
+
+USE new[] and delete[]
+
+Can use this for classes as well
+
+Destructor---------------------------------------------------------
+destructer gets called when:
+class instance gets allocated with new and then delete is called
+or if stack-allocated, when it goes out of scope
+
+class Point {
+public:
+ int x, y;
+Point() {
+ cout << "constructor invoked" << endl;
+ }
+ ~Point() {
+ cout << "destructor invoked" << endl;
+ }
+}
+
+For array allocation, can move many things into a class with a constructor and destructor:
+class IntegerArray {
+public:
+int *data;
+ int size;
+ IntegerArray(int size) {
+ data = new int[size];
+ this->size = size;
+ }
+ ~IntegerArray () {
+ delete[] data;
+ }
+};
+
+BE SURE TO CHECK SCOPE, COPY CONTRUCTOR, FUNDAMENTALS OF TYPES.
+ERRORS DUE TO MEMORY MANAGEMENT CAN BE CONFUSING AND HARD TO FIND
+PRACTICE MAKES PERFECT!

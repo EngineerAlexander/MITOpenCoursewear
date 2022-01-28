@@ -1,0 +1,129 @@
+Class definition syntax:
+
+class Vector
+{
+    public:
+        double xStart;
+        double xEnd;
+        double yStart;
+        double yEnd;
+}; <--------note the semicolon at the end of this block here
+
+NOTE: FIELDS (OR MEMBERS) INDICATED THE RELATED INFORMATION THAT OUR DATABASE CONTAINS. They can have different types.
+
+An instance is an occurance of a class just like other languages
+
+To define 2 instances of a student class:
+
+class Student
+{
+    public:
+        char *name;
+        int studentID;
+};
+
+int main()
+{
+    Student student1;
+    Student student2;
+}
+
+This initializes empty instances of class. access atrributes with
+variable.fieldName
+ex: student1.name = "Geza";
+
+NOTE FIELDS CAN BE OTHER CLASSES
+
+NOTE: PASSING BY VALUE NORMALLY DOES NOT UPDATE CLASS ATTRIBUTES UPON LEAVING 
+      PASSING BY REFERENCE WITH & DOES UPDATE ATTIRBUTES IN THE BACKGROUND!
+      REMEMBER THAT ex void offsetPoint(Point &p, double x, double y) would be defined in methods within the class or functions
+
+=======================================================================================
+Function prototypes allow you to give function headers to allow declaration of functions later
+class prototypes can also be implemented in a similar way:
+=======================================================================================
+// vector.h - header file
+class Point {
+public:
+ double x, y;
+ void offset(double offsetX, double offsetY);
+ void print();
+};
+class Vector {
+public:
+ Point start, end;
+ void offset(double offsetX, double offsetY);
+ void print();
+};
+=======================================================================================
+#include "vector.h"
+// vector.cpp - method implementation
+void Point::offset(double offsetX, double offsetY) {
+ x += offsetX; y += offsetY;
+}
+void Point::print() {
+ cout << "(" << x << "," << y << ")";
+}
+void Vector::offset(double offsetX, double offsetY) {
+ start.offset(offsetX, offsetY);
+ end.offset(offsetX, offsetY);
+}
+void Vector::print() {
+ start.print();
+ cout << " -> ";
+ end.print();
+ cout << endl;
+}
+
+=======================================================================================
+
+Constructers initialize class fields when they get instantiated
+
+class Point {
+public:
+ double x, y;
+ Point() {
+ x = 0.0; y = 0.0; cout << "Point instance created" << endl;
+ }
+};
+
+class Point {
+public:
+ double x, y;
+ Point(double nx, double ny) {
+ x = nx; y = ny; cout << "2-parameter constructor" << endl;
+ }
+};
+
+NOTE THERE CAN BE MULTIPLE CONSTRUCTORS WITH DIFFERENT ARGUMENT TYPES
+
+NOTE EQUATING ONE CLASS INSTANCE TO ANOTHER COPIES ALL CLASS FIELDS
+YOU CAN ALSO DEFINE YOUR OWN COPY CONSTRUCTOR
+Point(Point &o) {
+ x = o.x; y = o.y; cout << "custom copy constructor" << endl;
+ }
+
+public: is what's called an access modifier. it defines where fields/methods can be accessed from
+
+public = anywhere
+
+private = only within the class
+
+use getters to allow read-only access to private fields. make sure getter is in public even if fields are in private
+private = default if not specified
+
+
+
+
+c++ supports structs as carry over from c. however classes are usually used instead
+
+structs are essentially the same as classes, except default access modifier is public.
+
+Default Access Modifiers
+• struct: public by default
+• class: private by default
+
+
+
+
+
